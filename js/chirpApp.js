@@ -13,3 +13,8 @@ app.controller('mainController', function($scope){
         $scope.newPost = {created_by: '', text:'', created_at:''};
     };
 });
+
+app.controller('authController', function($scope){
+    $scope.user = {username: '', password: ''};
+    $scope.error_message= '';
+});
