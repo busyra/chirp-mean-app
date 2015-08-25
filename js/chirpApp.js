@@ -25,4 +25,8 @@ app.controller('authController', function($scope){
         //placeholder until auth is implemented
         $scope.error_message = 'login request for ' + $scope.user.username;
     };
+    $scope.register = function (){
+        //placeholder until auth is implemented
+        $scope.error_message = 'registration request for' + $scope.user.username;
+    };
 });
