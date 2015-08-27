@@ -4,7 +4,8 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var passport = require ('passport');
+var session = require ('express-session');
 var api = require('./routes/api');
 // var authenticate = require('./routes/authenticate');
 
@@ -16,11 +17,19 @@ app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+
+//middle wear
 app.use(logger('dev'));
+app.use(session({
+    secret: 'super secret'
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+//initialize has to be passed before session
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/api', api);
 // app.use('/auth', authenticate);
