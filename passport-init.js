@@ -35,7 +35,7 @@ module.exports = function(passport){
 			}
 			else{
 				console.log('Invalid password '+username);
-				return done(null, false)
+				return done(null, false);
 			}
 		}
 	));
@@ -54,7 +54,7 @@ module.exports = function(passport){
 			users[username] = {
 				username: username,
 				password: createHash(password)
-			}
+			};
 
 			console.log(users[username].username + ' Registration successful');
 			return done(null, users[username]);
