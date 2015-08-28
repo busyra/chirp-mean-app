@@ -30,6 +30,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 //initialize has to be passed before session
 app.use(passport.initialize());
 app.use(passport.session());
+//initialize passport
+var initPassport = require('./passport-init');
+initPassport(passport);
 
 app.use('/api', api);
 // app.use('/auth', authenticate);
