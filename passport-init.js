@@ -13,7 +13,7 @@ module.exports = function(passport){
 
 	//Desieralize user will call with the unique id provided by serializeuser
 	passport.deserializeUser(function(username, done) {
-
+		//return user object back
 		return done(null, users[username]);
 
 	});
@@ -21,21 +21,18 @@ module.exports = function(passport){
 	passport.use('login', new LocalStrategy({
 			passReqToCallback : true
 		},
-		function(req, username, password, done) {
-
-			if(users[username]){
-				console.log('User Not Found with username '+username);
-				return done(null, false);
+		function(req, username, password, done){
+			//if user exists
+			if(!users[username]){
+				return done('user not found', false);
 			}
-
-			if(isValidPassword(users[username], password)){
-				//sucessfully authenticated
-				return done(null, users[username]);
+			//check if password is correct
+			if(!isValidPassword(users[username], password)){
+				return done('invalid password', false);
 			}
-			else{
-				console.log('Invalid password '+username);
-				return done(null, false);
-			}
+			//successful log in
+			console.log('successfully signed in');
+			return done (null, users[username]);
 		}
 	));
 
@@ -43,20 +40,18 @@ module.exports = function(passport){
 			passReqToCallback : true // allows us to pass back the entire request to the callback
 		},
 		function(req, username, password, done) {
-
-			if (users[username]){
-				console.log('User already exists with username: ' + username);
-				return done(null, false);
+			// check if user already exists
+			if(users[username]){
+				return done('username already taken', false);
 			}
-
-			//store user in memory
+			//add user to db
 			users[username] = {
 				username: username,
 				password: createHash(password)
-			};
 
-			console.log(users[username].username + ' Registration successful');
+			};
 			return done(null, users[username]);
+
 		})
 	);
 
