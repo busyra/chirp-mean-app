@@ -11,6 +11,7 @@ var authenticate = require('./routes/authenticate')(passport);
 var mongoose = require('mongoose');
 //connects to mongodb
 mongoose.connect("mongodb://localhost:27017/chirp-test");
+require('./models/models.js');
 var app = express();
 
 // view engine setup
