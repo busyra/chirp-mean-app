@@ -11,7 +11,6 @@ var authenticate = require('./routes/authenticate')(passport);
 var mongoose = require('mongoose');
 //connects to mongodb
 mongoose.connect("mongodb://localhost:27017/chirp-test");
-require('./models/models.js');
 var app = express();
 
 // view engine setup
@@ -33,6 +32,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 //initialize has to be passed before session
 app.use(passport.initialize());
 app.use(passport.session());
+
+require('./models/models.js');
 //initialize passport
 var initPassport = require('./passport-init');
 initPassport(passport);
