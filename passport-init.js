@@ -42,17 +42,25 @@ module.exports = function(passport){
 			passReqToCallback : true // allows us to pass back the entire request to the callback
 		},
 		function(req, username, password, done) {
-			// check if user already exists
-			if(users[username]){
-				return done('username already taken', false);
-			}
-			//add user to db
-			users[username] = {
-				username: username,
-				password: createHash(password)
-
-			};
-			return done(null, users[username]);
+			User.findOne({username: username}, function(err, user){
+				if(err){
+					return done(err, false);
+				}
+				if(user){
+					//we have already signed this user up
+					return done('user already taken', false);
+				}
+				var user = new User();
+				user.username = username;
+				user.password = createHash(password);
+				user.save(function(err, user){
+					if(err){
+						return done(err,false);
+					}
+					console.log('successfully signed up user' + username);
+					return done(null, user);
+				});
+			});
 
 		})
 	);
