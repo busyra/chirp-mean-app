@@ -8,7 +8,7 @@ var userSchema = new mongoose.Schema({
 
 var postSchema = new mongoose.Schema({
     text: String,
-    created_by: String,
+    username: String,
     created_at: {type: Date, default: Date.now}
 });
 
