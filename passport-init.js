@@ -25,16 +25,20 @@ module.exports = function(passport){
 		},
 		function(req, username, password, done){
 			//if user exists
-			if(!users[username]){
-				return done('user not found', false);
-			}
-			//check if password is correct
-			if(!isValidPassword(users[username], password)){
-				return done('invalid password', false);
-			}
-			//successful log in
-			console.log('successfully signed in');
-			return done (null, users[username]);
+			User.findOne({username: username}, function(err,user){
+				if(err){
+					return done(err, false);
+				}
+				if(!user){
+					//if there is no user with this user name
+					return done('user '+ username+ 'not found!', false);
+				}
+				if(!isValidPassword(user, password)){
+					//wrong password
+					return done('incorrect password', false);
+				}
+				return done(null, user);
+			});
 		}
 	));
 
