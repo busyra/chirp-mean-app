@@ -7,6 +7,7 @@ var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 require('./models/models.js');
+var index = require('./routes/index')
 var api = require('./routes/api');
 var authenticate = require('./routes/authenticate')(passport);
 var mongoose = require('mongoose');
@@ -34,6 +35,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use('/', index);
 app.use('/auth', authenticate);
 app.use('/api', api);
 
