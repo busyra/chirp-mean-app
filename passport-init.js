@@ -36,10 +36,12 @@ module.exports = function(passport){
 					}
 					if(!isValidPassword(user, password)){
 						//wrong password
-						return done('incorrect password', false);
+						console.log('Invalid Password');
+						return done(null, false);
 					}
 					return done(null, user);
-			});
+				}
+			);
 		}
 	));
 
@@ -55,19 +57,19 @@ module.exports = function(passport){
 				if(user){
 					//we have already signed this user up
 					return done('user already taken', false);
+				}else{
+					var newUser = new User();
+					newUser.username = username;
+					newUser.password = createHash(password);
+					newUser.save(function(err){
+						if(err){
+							console.log('Error in Saving user: ' +err);
+						}
+						console.log('successfully signed up user' + newUser.username);
+						return done(null, newUser);
+					});
 				}
-				var newUser = new User();
-				newUser.username = username;
-				newUser.password = createHash(password);
-				newUser.save(function(err){
-					if(err){
-						console.log('Error in Saving user: ' +err);
-					}
-					console.log('successfully signed up user' + newUser.username);
-					return done(null, newUser);
-				});
 			});
-
 		})
 	);
 
