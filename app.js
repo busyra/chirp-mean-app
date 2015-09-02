@@ -6,6 +6,7 @@ var passport = require('passport');
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+require('./models/models.js');
 var api = require('./routes/api');
 var authenticate = require('./routes/authenticate')(passport);
 var mongoose = require('mongoose');
@@ -33,13 +34,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 app.use(passport.session());
 
-require('./models/models.js');
-//initialize passport
-var initPassport = require('./passport-init');
-initPassport(passport);
-
-app.use('/api', api);
 app.use('/auth', authenticate);
+app.use('/api', api);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -47,6 +43,9 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
+//initialize passport
+var initPassport = require('./passport-init');
+initPassport(passport);
 
 // error handlers
 
